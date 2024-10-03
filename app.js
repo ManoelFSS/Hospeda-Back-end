@@ -9,7 +9,13 @@ connectDB();
 
 const app = express();
 
-app.use(cors()); // Permite requisições de qualquer origem
+// Permite requisições de qualquer origem
+app.use(cors({
+    origin: 'https://hospedaplus.com.br', // Permite requisições somente dessa origem
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    credentials: true // Permite o uso de cookies e credenciais
+})); 
+
 app.use(express.json());
 
 
