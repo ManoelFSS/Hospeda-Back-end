@@ -10,14 +10,18 @@ connectDB();
 const app = express();
 
 // Permite requisições de qualquer origem
-app.use(cors({
-    origin: 'https://hospedaplus.com.br', // Permite requisições somente dessa origem
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-    credentials: true // Permite o uso de cookies e credenciais
-})); 
+// Configurações CORS
+const corsOptions = {
+    origin: ['http://localhost:3001', 'https://hospedaplus.com.br'], // Permitindo localhost e produção
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization'
+};
+
+// Aplicando o middleware CORS
+app.use(cors(corsOptions));
+
 
 app.use(express.json());
-
 
 // Usando as rotas de usuários na URL base /api
 app.use('/api', userRoutes);

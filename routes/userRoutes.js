@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser, loginUser, updateUser, deleteUser, verifyToken } = require('../controllers/userController');
+const { registerUser, loginUser, updateUser, deleteUser, verifyToken, refreshToken } = require('../controllers/userController');
 const protect = require('../middlewares/authMiddleware');
 
 const router = express.Router();
@@ -12,6 +12,10 @@ router.post('/login', loginUser);
 
 // Rota para verificar o token
 router.get('/verify-token', verifyToken); // Adiciona esta linha
+
+// Rota para renovar token
+router.post('/refresh-token', refreshToken);
+
 
 // Rotas protegidas para atualizar e deletar
 router.put('/:id', protect, updateUser);

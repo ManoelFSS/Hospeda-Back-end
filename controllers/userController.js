@@ -89,27 +89,55 @@ const deleteUser = async (req, res) => {
   }
 };
 
+
+// Função para renovar o token
+const refreshToken = (req, res) => {
+  const refreshToken = req.body.refreshToken; // O refresh token deve ser enviado no corpo da requisição
+  if (!refreshToken) return res.status(403).json({ message: 'Refresh token não fornecido' });
+
+  // Aqui você deve validar o refresh token (por exemplo, conferindo no banco de dados se é válido)
+  jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, decoded) => {
+    if (err) {
+      console.error('Erro ao verificar refresh token:', err);
+      return res.status(403).json({ message: 'Refresh token inválido' });
+    }
+
+    // Gera um novo access token
+    const newAccessToken = generateToken(decoded._id); // Reutiliza a função de gerar token
+
+    res.status(200).json({
+      accessToken: newAccessToken,
+    });
+  });
+};
+
+
 // Verifica o token JWT
-const verifyToken =  (req, res) => {
+const verifyToken = (req, res) => {
   const token = req.headers.authorization?.split(' ')[1]; // Obtém o token do cabeçalho
   if (!token) return res.status(401).json({ message: 'Token não fornecido' });
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
+      if (err.name === 'TokenExpiredError') {
+        // Token expirado, podemos decidir se queremos renovar ou não
+        return res.status(401).json({ message: 'Token expirado', canRenew: true });
+      }
       console.error('Erro ao verificar token:', err);
       return res.status(401).json({ message: 'Token inválido' });
     }
-    
+
     // Caso o token seja válido, você pode retornar mais informações do usuário
     res.status(200).json({
       message: 'Token válido',
       email: decoded.email,
-      userId: decoded.userId, // Se tiver um userId ou outro dado no token
-      nome: decoded.nome, // Se o nome do usuário estiver no token, por exemplo
+      userId: decoded._id, // Certifique-se de que a chave correta seja usada
+      nome: decoded.nome,
       token: token,
     });
   });
 };
+
 
 
 
@@ -119,4 +147,5 @@ module.exports = {
   updateUser,
   deleteUser,
   verifyToken,
+  refreshToken,
 };
