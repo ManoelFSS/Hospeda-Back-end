@@ -18,9 +18,9 @@ app.use('/api', userRoutes);
 // app.use('/api/users', userRoutes);
 
 // Rota inicial
-// app.get('/', (req, res) => {
-//   res.send('API rodando...');
-// });
+app.get('/', (req, res) => {
+    res.send('API rodando...');
+});
 
 const PORT = process.env.PORT || 5000;
 
