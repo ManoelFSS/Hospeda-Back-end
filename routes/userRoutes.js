@@ -15,6 +15,7 @@ router.get('/verify-token', verifyToken); // Adiciona esta linha
 
 // Rotas protegidas para atualizar e deletar
 router.put('/:id', protect, updateUser);
+
 router.delete('/:id', protect, deleteUser);
 
 module.exports = router;
