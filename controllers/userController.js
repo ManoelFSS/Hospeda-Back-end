@@ -10,7 +10,7 @@ const generateToken = (id) => {
 
 // Registrar novo usuário
 const registerUser = async (req, res) => {
-  const { name, phone, dataNasc, rg, cpf,email, password } = req.body;
+  const { name, phone, dataNasc, rg, cpf,email, password , empresa, cnpj } = req.body;
 
   try {
     // Validação do input
