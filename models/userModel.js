@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema({
   cpf: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  empresa: { type: String },
+  cnpj: { type: String }
 });
 
 // Método para criptografar a senha antes de salvar

@@ -10,7 +10,7 @@ const generateToken = (id) => {
 
 // Registrar novo usuário
 const registerUser = async (req, res) => {
-  const { name, phone, dataNasc, rg, cpf,email, password , empresa, cnpj } = req.body;
+  const { name, phone, dataNasc, rg, cpf, email, password, empresa, cnpj } = req.body;
 
   try {
     // Validação do input
@@ -28,10 +28,18 @@ const registerUser = async (req, res) => {
     // Cria um novo usuário
     const user = await User.create({ name, phone, dataNasc, rg, cpf, email, password });
 
+    // Cria um novo documento na coleção de empresas com o ID do usuário
+    const newCompanies = await companies.create({
+      nome: empresa,
+      cnpj: cnpj,
+      user: user._id, // Referência ao ID do usuário recém-criado
+    });
+
     res.status(201).json({
       _id: user._id,
       email: user.email,
       token: generateToken(user._id),
+      empresa: newCompanies, // Retorna os dados da empresa também, se necessário
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
