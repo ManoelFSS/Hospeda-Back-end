@@ -2,12 +2,13 @@ const { z } = require('zod');
 
 // Validação para o registro de usuário
 const registerValidation = z.object({
-  name: z.string().min(1, 'Nome é obrigatório'),
-  phone: z.string().optional(), // Adicione aqui, se necessário
-  dataNasc: z.date().optional(), // Exemplo para data de nascimento
-  email: z.string().email('Email inválido'),
-  password: z.string().min(6, 'Senha deve ter no mínimo 6 caracteres'),
+    name: z.string().min(3, 'Nome é obrigatório'),
+    phone: z.string().optional(), // Adicione aqui, se necessário
+    dataNasc: z.date().optional(), // Exemplo para data de nascimento
+    email: z.string().email('Email inválido'),
+    password: z.string().min(8, 'Senha deve ter no mínimo 6 caracteres'),
 });
+
 
 
 // Validação para o login de usuário
