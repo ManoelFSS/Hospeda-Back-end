@@ -10,7 +10,7 @@ const registerValidation = z.object({
   email: z.string().email('Email inválido'),
   password: z.string().min(8, 'Senha deve ter no mínimo 8 caracteres'),
   empresa: z.string().min(3, 'Nome da empresa é obrigatório'), // Validação para o nome da empresa
-  cnpj: z.string().length(14, 'CNPJ deve ter 14 caracteres').optional() // Validação para o CNPJ, ajustado para 14 caracteres
+  cnpj: z.string().length(18, 'CNPJ deve ter 18 caracteres').optional() // Validação para o CNPJ, ajustado para 14 caracteres
 });
 
 

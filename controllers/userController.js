@@ -21,8 +21,11 @@ const registerUser = async (req, res) => {
 
     // Verifica se o usuário já existe
     const userExists = await User.findOne({ email });
+
     if (userExists) {
+
       return res.status(400).json({ message: 'Usuário já registrado' });
+  
     }
 
     // Cria um novo usuário
@@ -41,7 +44,7 @@ const registerUser = async (req, res) => {
       token: generateToken(user._id),
       company: newCompany, // Retorna os dados da empresa também, se necessário
     });
-    
+
   } catch (error) {
     console.error("Erro ao registrar usuário ou empresa:", error); // Para melhor depuração
     res.status(500).json({ message: error.message });
