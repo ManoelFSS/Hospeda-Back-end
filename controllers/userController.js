@@ -39,7 +39,7 @@ const registerUser = async (req, res) => {
       _id: user._id,
       email: user.email,
       token: generateToken(user._id),
-      empresa: newCompanies, // Retorna os dados da empresa também, se necessário
+      companies: newCompanies, // Retorna os dados da empresa também, se necessário
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
