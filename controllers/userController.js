@@ -1,4 +1,4 @@
-const User = require('../models/userModel');
+const {User, Company} = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { registerValidation, loginValidation } = require('../validations/userValidation');
@@ -29,7 +29,7 @@ const registerUser = async (req, res) => {
     const user = await User.create({ name, phone, dataNasc, rg, cpf, email, password });
 
     // Cria um novo documento na coleção de empresas com o ID do usuário
-    const newCompanies = await companies.create({
+    const newCompany = await Company.create({
       nome: empresa,
       cnpj: cnpj,
       user: user._id, // Referência ao ID do usuário recém-criado
@@ -39,9 +39,11 @@ const registerUser = async (req, res) => {
       _id: user._id,
       email: user.email,
       token: generateToken(user._id),
-      companies: newCompanies, // Retorna os dados da empresa também, se necessário
+      company: newCompany, // Retorna os dados da empresa também, se necessário
     });
+    
   } catch (error) {
+    console.error("Erro ao registrar usuário ou empresa:", error); // Para melhor depuração
     res.status(500).json({ message: error.message });
   }
 };

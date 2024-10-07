@@ -10,8 +10,17 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   empresa: { type: String },
-  cnpj: { type: String }
+  cnpj: { type: String },
+  createdAt: { type: Date, default: Date.now }, // Data de criação
 });
+
+const companySchema = new mongoose.Schema({
+  nome: { type: String, required: true },
+  cnpj: { type: String, required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true }, // Referência ao modelo de usuários
+});
+
+const Company = mongoose.model('Company', companySchema);
 
 // Método para criptografar a senha antes de salvar
 userSchema.pre('save', async function (next) {
@@ -28,4 +37,4 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 const User = mongoose.model('Users', userSchema);
 
-module.exports = User;
+module.exports = {User, Company};
