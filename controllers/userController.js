@@ -32,7 +32,7 @@ const registerUser = async (req, res) => {
     const user = await User.create({ name, phone, dataNasc, rg, cpf, email, password });
 
     // Cria um novo documento na coleção de empresas com o ID do usuário
-    const newCompany = await Company.create({
+    const newHotel = await Hoteis.create({
       nome: empresa,
       cnpj: cnpj,
       user: user._id, // Referência ao ID do usuário recém-criado
@@ -42,7 +42,7 @@ const registerUser = async (req, res) => {
       _id: user._id,
       email: user.email,
       token: generateToken(user._id),
-      company: newCompany, // Retorna os dados da empresa também, se necessário
+      Hoteis: newHotel, // Retorna os dados da empresa também, se necessário
     });
 
   } catch (error) {
