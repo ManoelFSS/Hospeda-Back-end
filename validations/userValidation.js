@@ -2,7 +2,7 @@ const { z } = require('zod');
 
 // Validação para o registro de usuário
 const registerValidation = z.object({
-  name: z.string().min(3, { message: "O nome é obrigatório." }),
+  name: z.string().min(2, { message: "O nome é obrigatório." }),
   phone: z.string().min(14, { message: "O número de celular deve ter no mínimo 10 dígitos." }),
   dataNasc: z.string().min(10, { message: "A data de nascimento é obrigatória." }),
   rg: z.string().min(9, { message: "O RG deve ter no mínimo 9 caracteres." }),
