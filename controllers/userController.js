@@ -1,4 +1,4 @@
-const {User, Company} = require('../models/userModel');
+const {User, Hotel} = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { registerValidation, loginValidation } = require('../validations/userValidation');
@@ -32,8 +32,8 @@ const registerUser = async (req, res) => {
     const user = await User.create({ name, phone, dataNasc, rg, cpf, email, password });
 
     // Cria um novo documento na coleção de empresas com o ID do usuário
-    const newHotel = await Hoteis.create({
-      nome: empresa,
+    const newHotel = await Hotel.create({
+      name: empresa,
       cnpj: cnpj,
       user: user._id, // Referência ao ID do usuário recém-criado
     });
@@ -42,7 +42,7 @@ const registerUser = async (req, res) => {
       _id: user._id,
       email: user.email,
       token: generateToken(user._id),
-      Hoteis: newHotel, // Retorna os dados da empresa também, se necessário
+      Hotel: newHotel, // Retorna os dados da empresa também, se necessário
     });
 
   } catch (error) {

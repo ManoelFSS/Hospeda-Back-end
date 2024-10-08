@@ -15,12 +15,12 @@ const userSchema = new mongoose.Schema({
 });
 
 const companySchema = new mongoose.Schema({
-  nome: { type: String, required: true },
+  name: { type: String, required: true },
   cnpj: { type: String, required: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true }, // Referência ao modelo de usuários
 });
 
-const Company = mongoose.model('Company', companySchema);
+const Hotel = mongoose.model('Hoteis', companySchema);
 
 // Método para criptografar a senha antes de salvar
 userSchema.pre('save', async function (next) {
@@ -37,4 +37,4 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 const User = mongoose.model('Users', userSchema);
 
-module.exports = {User, Company};
+module.exports = {User, Hotel};
