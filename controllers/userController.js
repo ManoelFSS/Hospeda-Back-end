@@ -1,6 +1,5 @@
 const {User, Hotel} = require('../models/userModel');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 const { registerValidation, loginValidation } = require('../validations/userValidation');
 
 // Gera o token JWT
@@ -10,7 +9,7 @@ const generateToken = (id) => {
 
 // Registrar novo usuário
 const registerUser = async (req, res) => {
-  const { name, phone, dataNasc, rg, cpf, email, password, empresa, cnpj } = req.body;
+  const { name, phone, email, password } = req.body;
 
   try {
     // Validação do input
@@ -29,13 +28,18 @@ const registerUser = async (req, res) => {
     }
 
     // Cria um novo usuário
-    const user = await User.create({ name, phone, dataNasc, rg, cpf, email, password });
+    const user = await User.create({ name, phone, email, password });
 
     // Cria um novo documento na coleção de empresas com o ID do usuário
     const newHotel = await Hotel.create({
-      name: empresa,
-      cnpj: cnpj,
-      user: user._id, // Referência ao ID do usuário recém-criado
+      name: "",
+      cnpj: "",
+      address:"",
+      number: "",
+      city: "",
+      state: "",
+      cep: "",
+      user_id: user._id, // Referência ao ID do usuário recém-criado
     });
 
     res.status(201).json({
@@ -150,9 +154,6 @@ const verifyToken = (req, res) => {
     });
   });
 };
-
-
-
 
 module.exports = {
   registerUser,

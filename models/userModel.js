@@ -4,22 +4,21 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: String },
-  dataNasc: { type: Date },
-  rg: { type: String },
-  cpf: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  empresa: { type: String },
-  cnpj: { type: String },
   createdAt: { type: Date, default: Date.now }, // Data de criação
 });
 
 const companySchema = new mongoose.Schema({
   name: { type: String, required: true },
   cnpj: { type: String, required: true },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true }, // Referência ao modelo de usuários
+  address: { type: String, default: "" },   // String vazia como padrão
+  number: { type: String, default: "" },    // String vazia como padrão
+  city: { type: String, default: "" },      // String vazia como padrão
+  state: { type: String, default: "" },     // String vazia como padrão
+  cep: { type: String, default: "" },       // String vazia como padrão
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true }
 });
-
 const Hotel = mongoose.model('Hoteis', companySchema);
 
 // Método para criptografar a senha antes de salvar
