@@ -10,8 +10,8 @@ const userSchema = new mongoose.Schema({
 });
 
 const companySchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  cnpj: { type: String, required: true },
+  name: { type: String, default: "" },
+  cnpj: { type: String, default: "" },
   address: { type: String, default: "" },   // String vazia como padrão
   number: { type: String, default: "" },    // String vazia como padrão
   city: { type: String, default: "" },      // String vazia como padrão
