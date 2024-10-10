@@ -12,7 +12,7 @@ const app = express();
 // Permite requisições de qualquer origem
 // Configurações CORS
 const corsOptions = {
-    origin: ['http://localhost:3001', 'https://hospedaplus.com.br', "https://hospeda-plus.netlify.app/"], // Permitindo localhost e produção
+    origin: ['http://localhost:3001', 'https://hospedaplus.com.br', "https://hospeda-plus.netlify.app"], // Permitindo localhost e produção
     methods: 'GET,POST,PUT,DELETE',
     allowedHeaders: 'Content-Type,Authorization'
 };
