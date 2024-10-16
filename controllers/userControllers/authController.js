@@ -4,8 +4,8 @@ const { User } = require('../../models/userModel');
 const { loginValidation } = require('../../validations/userValidation');
 
 // Gera o token JWT
-const generateToken = (id) => {
-    return jwt.sign({ _id: id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+const generateRefreshToken = (id, email) => {
+    return jwt.sign({ _id: id, email }, process.env.JWT_REFRESH_SECRET, { expiresIn: '2h' }); // Expira em 2 horas
 };
 
 // Login de usuário
@@ -16,17 +16,21 @@ const loginUser = async (req, res) => {
         // Validação do input
         const validation = loginValidation.safeParse(req.body);
         if (!validation.success) {
-        return res.status(400).json(validation.error.errors);
+            return res.status(400).json(validation.error.errors);
         }
 
         // Verifica se o usuário existe
         const user = await User.findOne({ email });
         if (user && (await user.matchPassword(password))) {
-        return res.json({
-            _id: user._id,
-            email: user.email,
-            token: generateToken(user._id),
-        });
+            const accessToken = generateToken(user._id, user.email);  // Gera o access token
+            const refreshToken = generateRefreshToken(user._id, user.email);  // Gera o refresh token
+
+            return res.json({
+                _id: user._id,
+                email: user.email,
+                token: accessToken,           // Retorna o access token
+                refreshToken: refreshToken,   // Retorna o refresh token
+            });
         }
 
         res.status(401).json({ message: 'Credenciais inválidas' });
@@ -34,6 +38,7 @@ const loginUser = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 // Verifica o token JWT
 const verifyToken = (req, res) => {
@@ -63,10 +68,10 @@ const refreshToken = (req, res) => {
 
     jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, decoded) => {
         if (err) {
-        return res.status(403).json({ message: 'Refresh token inválido' });
+            return res.status(403).json({ message: 'Refresh token inválido' });
         }
 
-        const newAccessToken = generateToken(decoded._id);
+        const newAccessToken = generateToken(decoded._id, decoded.email);  // Gera um novo access token
         res.status(200).json({ accessToken: newAccessToken });
     });
 };
