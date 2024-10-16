@@ -4,9 +4,15 @@ const { User } = require('../../models/userModel');
 const { loginValidation } = require('../../validations/userValidation');
 
 // Gera o token JWT
-const generateRefreshToken = (id, email) => {
-    return jwt.sign({ _id: id, email }, process.env.JWT_REFRESH_SECRET, { expiresIn: '2h' }); // Expira em 2 horas
+const generateToken = (id, email) => {
+    return jwt.sign({ _id: id, email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
+
+const generateRefreshToken = (id, email) => {
+    return jwt.sign({ _id: id, email }, process.env.JWT_REFRESH_SECRET, { expiresIn: '2h' }); // Expira em 2h dias
+};
+
+
 
 // Login de usuário
 const loginUser = async (req, res) => {
@@ -75,6 +81,7 @@ const refreshToken = (req, res) => {
         res.status(200).json({ accessToken: newAccessToken });
     });
 };
+
 
 module.exports = {
     loginUser,
