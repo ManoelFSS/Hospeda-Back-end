@@ -5,11 +5,11 @@ const { loginValidation } = require('../../validations/userValidation');
 
 // Gera o token JWT
 const generateToken = (id, email) => {
-    return jwt.sign({ _id: id, email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return jwt.sign({ _id: id, email }, process.env.JWT_SECRET, { expiresIn: '1m' });
 };
 
 const generateRefreshToken = (id, email) => {
-    return jwt.sign({ _id: id, email }, process.env.JWT_REFRESH_SECRET, { expiresIn: '2h' }); // Expira em 2h dias
+    return jwt.sign({ _id: id, email }, process.env.JWT_REFRESH_SECRET, { expiresIn: '2m' }); // Expira em 2h dias
 };
 
 
